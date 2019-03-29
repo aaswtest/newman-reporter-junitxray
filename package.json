@@ -1,0 +1,26 @@
+{
+  "name": "newman-reporter-junitxray",
+  "version": "1.0.0",
+  "description": "newman Junit Kount Custom reporter for use with XRay for JIRA",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
+    "xmlbuilder": "^10.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "newman",
+    "Junit"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=6"
+  },
+  "peerDependencies": {
+    "newman": ">=4"
+  }
+}
