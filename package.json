@@ -1,12 +1,16 @@
 {
   "name": "newman-reporter-junitxray",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "newman Junit Custom reporter for use with XRay for JIRA",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:aaswtest/newman-reporter-junitxray.git"
+  },
   "dependencies": {
-    "lodash": "^4.17.10",
-    "moment": "^2.22.2",
-    "xmlbuilder": "^10.0.0"
+    "lodash": "4.17.11",
+    "moment": "2.24.0",
+    "xmlbuilder": "11.0.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +19,7 @@
     "newman",
     "Junit"
   ],
-  "author": "",
+  "author": "morrisonalana@gmail.com",
   "license": "ISC",
   "engines": {
     "node": ">=6"
