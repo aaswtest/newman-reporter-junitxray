@@ -21,7 +21,7 @@ In order to enable this reporter, specify `junit` in Newman's `-r` or `--reporte
 In order to enable this reporter, specify `junitxray` in Newman's `-r` or `--reporters` option.
 
 ```console
-newman run https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65-JsLv -r junitxray --reporter-junitxray-export './examples/full/result.xml' -n 2
+newman run https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65-JsLv -r junitxray --reporter-junitxray-export './examples/xray/result.xml' -n 2
 ```
 
 ### Options
@@ -40,10 +40,10 @@ const newman = require('newman');
 
 newman.run({
     collection: require('https://www.getpostman.com/collections/631643-f695cab7-6878-eb55-7943-ad88e1ccfd65-JsLv'), // can also provide a URL or path to a local JSON file.
-    reporters: 'junitfull',
+    reporters: 'junitxray',
     reporter: {
         junitxray: {
-            export: './examples/full/result.xml', // If not specified, the file will be written to `newman/` in the current working directory.
+            export: './examples/xray/result.xml', // If not specified, the file will be written to `newman/` in the current working directory.
         }
     },
 	iterationCount: 2

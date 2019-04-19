@@ -110,52 +110,31 @@ JunitXrayReporter = function(newman, reporterOptions) {
             _.forEach(executions, function(testExecution) {
                 var iteration = testExecution.cursor.iteration,
                     errored,
+                    failure,
                     msg = `Iteration: ${iteration}\n`;
 
                 // Timestamp (add time)
                 executionTime = _.get(testExecution, "response.responseTime") / 1000 || 0;
 
-                date = moment(date)
-                    .add(_.get(currentItem, "response.responseTime"), "ms")
-                    .local()
-                    .format("YYYY-MM-DDTHH:mm:ss.SSS");
-
                 // Time
                 testsuite.att("time", executionTime.toFixed(3));
 
-                testcase.att("time", executionTime.toFixed(3));
+                
                 // Errors / Failures
-                // var errorItem = testExecution.error;
-                // if (errorItem) {
-                //     var result;
-                //     // Error
-                //     ++errors;
-                //     result = testcase.ele("error");
-
-                //     if (errorItem.stacktrace) {
-                //         result.dat(errorItem.stacktrace);
-                //     } else {
-                //         // Failure
-                //         ++failures;
-                //         result = testcase.ele("failure");
-                //         result.dat(errorItem.stack);
-                //     }
-
-                //     result.att("type", errorItem.name);
-                //     result.att("message", errorItem.message);
-                // }
                 if (testExecution.requestError) {
                     ++errors;
                     errored = true;
                     msg += "RequestError: " + testExecution.requestError.stack + "\n";
                 }
                 msg += "\n---\n";
+
+
                 _.forEach(["testScript", "prerequestScript"], function(prop) {
                     _.forEach(testExecution[prop], function(err) {
                         if (err.error) {
                             ++errors;
                             errored = true;
-                            msg = msg + prop + "Error: " + (err.error.stack || err.error.message);
+                            msg = (msg + prop + "Error: " + (err.error.stack || err.error.message));
                             msg += "\n---\n";
                         }
                     });
@@ -171,6 +150,15 @@ JunitXrayReporter = function(newman, reporterOptions) {
 
                     if (err) {
                         ++failures;
+                        failure = testcase.ele("failure");
+                        failure.att("type", "AssertionFailure");
+                        failure.dat('Collection name: ' + collection.name + '.');
+                        failure.dat('Test description: '+ assertion.assertion + '.')
+                        if (failures.length !== 0) {
+                            failure.att("message", err.message);
+                            failure.dat("Error message: " + err.message + ".");
+                            failure.dat("Stacktrace: " + err.stack + ".");
+                        }
                     }
                 });
 
@@ -180,22 +168,14 @@ JunitXrayReporter = function(newman, reporterOptions) {
                 // Errors
                 testsuite.att("errors", errors);
 
-                if (failures && failures.length) {
-                    failure = testcase.ele("failure");
-                    failure.att("type", "AssertionFailure");
-                    failure.dat("Failed " + failures.length + " times.");
-                    if (failures.length !== 0) {
-                        failure.att("message", failures[0].message);
-                        failure.dat("Error message: " + failures[0].message + ".");
-                        failure.dat("Stacktrace: " + failures[0].stack + ".");
-                    }
-                }
+                errorMessages && testsuite.ele('system-err').dat(errorMessages);
+
             });
         });
 
         newman.exports.push({
-            name: "nunit-reporter",
-            default: "newman-run-report.xml",
+            name: "junit-reporter-junitxray",
+            default: "newman-run-report-xray.xml",
             path: reporterOptions.export,
             content: global.end({
                 pretty: true,
