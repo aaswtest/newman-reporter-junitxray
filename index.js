@@ -97,12 +97,6 @@ JunitXrayReporter = function(newman, reporterOptions) {
             collName = _.upperFirst(_.camelCase(collection.name).replace(/\W/g, ""));
             testcase.att("classname", collName);
 
-            // Time (testsuite time divided by number of assertions)
-            testcase.att(
-                "time",
-                (_.get(currentItem, "response.responseTime") / 1000 || 0).toFixed(3),
-            );
-
             //testcase.att("name", currentItem.item.name);
             testcase.att("name", currentItem.name);
 
@@ -119,7 +113,12 @@ JunitXrayReporter = function(newman, reporterOptions) {
                 // Time
                 testsuite.att("time", executionTime.toFixed(3));
 
-                
+                // Time (testsuite time divided by number of assertions)
+                testcase.att(
+                    "time",
+                    (_.get(testExecution, "response.responseTime") / 1000 || 0).toFixed(3),
+                );
+
                 // Errors / Failures
                 if (testExecution.requestError) {
                     ++errors;
