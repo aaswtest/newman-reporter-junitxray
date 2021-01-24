@@ -65,7 +65,7 @@ JunitXrayReporter = function(newman, reporterOptions) {
 
         // Process executions (testsuites)
         _.forEach(cache, function(executions, itemId) {
-            var testsuite = content.ele("testsuite");
+            var testsuite = xmlContent.ele("testsuite");
             var failures = 0,
                 currentItem,
                 errors = 0,
