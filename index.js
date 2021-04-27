@@ -50,9 +50,9 @@ JunitXrayReporter = function(newman, reporterOptions) {
             return;
         }
 
-        global = xml.create("testsuites", { version: "1.0", encoding: "UTF-8" });
-        global.att("name", collection.name);
-        global.att("tests", _.get(newman, "summary.run.stats.tests.total", "unknown"));
+        let xmlContent = xml.create("testsuites", { version: "1.0", encoding: "UTF-8" });
+        xmlContent.att("name", collection.name);
+        xmlContent.att("tests", _.get(newman, "summary.run.stats.tests.total", "unknown"));
 
         cache = _.transform(
             report,
@@ -65,7 +65,7 @@ JunitXrayReporter = function(newman, reporterOptions) {
 
         // Process executions (testsuites)
         _.forEach(cache, function(executions, itemId) {
-            var testsuite = global.ele("testsuite");
+            var testsuite = xmlContent.ele("testsuite");
             var failures = 0,
                 currentItem,
                 errors = 0,
@@ -176,7 +176,7 @@ JunitXrayReporter = function(newman, reporterOptions) {
             name: "junit-reporter-junitxray",
             default: "newman-run-report-xray.xml",
             path: reporterOptions.export,
-            content: global.end({
+            content: xmlContent.end({
                 pretty: true,
                 indent: "  ",
                 newline: "\n",
