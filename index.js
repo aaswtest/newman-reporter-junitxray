@@ -95,7 +95,7 @@ JunitXrayReporter = function(newman, reporterOptions) {
 
             // Classname
             collName = _.upperFirst(_.camelCase(collection.name).replace(/\W/g, ""));
-            testcase.att("classname", collName);
+            testcase.att("classname", getParentName(currentItem));
 
             //testcase.att("name", currentItem.item.name);
             testcase.att("name", currentItem.name);
